@@ -8,4 +8,5 @@
 /var/cache
 /var/log
 /vendor/
+/idea
 ###< symfony/framework-bundle ###
