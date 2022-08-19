@@ -19,6 +19,20 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\Application\Cli\Command\ResizeImageCommand:
+        autowire: true
+        arguments:
+            $filesDirectory: '%env(FILES_DIRECTORY)%'
 
+    App\Infrastructure\DropboxFileManager:
+        autowire: true
+        arguments:
+            $dropboxUploadEndpoint: '%env(DROPBOX_UPLOAD_ENDPOINT)%'
+            $dropboxToken: '%env(DROPBOX_TOKEN)%'
+
+    App\Infrastructure\ImagineImageOptimizer:
+        autowire: true
+        arguments:
+            $resizedImagesDirectory: '%env(RESIZED_IMAGES_DIRECTORY)%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

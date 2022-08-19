@@ -4,30 +4,38 @@ namespace App\Infrastructure;
 
 use App\Application\ImageOptimizer;
 use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
 
 class ImagineImageOptimizer implements ImageOptimizer
 {
     private $imagine;
 
-    public function __construct()
+    private string $resizedImagesDirectory;
+
+    public function __construct(string $resizedImagesDirectory)
     {
         $this->imagine = new Imagine();
+        $this->resizedImagesDirectory = $resizedImagesDirectory;
     }
 
-    public function resize(string $filename, int $width, int $height): void
+    public function resize(string $filePath, int $width, int $height): string
     {
-        $imageInfo = getimagesize($filename);
-        dump($imageInfo);
-//        $ratio = $iwidth / $iheight;
-//        $width = self::MAX_WIDTH;
-//        $height = self::MAX_HEIGHT;
-//        if ($width / $height > $ratio) {
-//            $width = $height * $ratio;
-//        } else {
-//            $height = $width / $ratio;
-//        }
-//
-//        $photo = $this->imagine->open($filename);
-//        $photo->resize(new Box($width, $height))->save($filename);
+        $imageInfo = getimagesize($filePath);
+        if (empty($imageInfo)) {
+            throw new \InvalidArgumentException('Niepoprawne zdjęcie');
+        }
+
+        $ratio = $imageInfo[0] / $imageInfo[1];
+        if ($width / $height > $ratio) {
+            $width = $height * $ratio;
+        } else {
+            $height = $width / $ratio;
+        }
+
+        $photo = $this->imagine->open($filePath);
+        $resizedFilePath = $this->resizedImagesDirectory.basename($filePath);
+        $photo->resize(new Box($width, $height))->save($resizedFilePath);
+
+        return $resizedFilePath;
     }
 }
