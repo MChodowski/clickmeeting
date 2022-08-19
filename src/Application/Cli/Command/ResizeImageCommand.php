@@ -50,20 +50,29 @@ class ResizeImageCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $fileName = $input->getOption(self::INPUT_FILENAME);
-        if ($fileName === null) {
-            throw new \InvalidArgumentException('Brak podanej ścieżki pliku');
+        try {
+            $fileName = $input->getOption(self::INPUT_FILENAME);
+            if ($fileName === null) {
+                throw new \InvalidArgumentException('Brak podanej ścieżki pliku');
+            }
+
+            $filePath = $this->filesDirectory.$fileName;
+
+            if (!$this->filesystem->exists($filePath)) {
+                throw new \InvalidArgumentException('Plik nie istnieje');
+            }
+
+            $resizedFilePath = $this->imageOptimizer->resize($filePath, 150, 150);
+
+            $result = $this->fileManager->save($resizedFilePath, '/'.basename($resizedFilePath));
+
+            $output->writeln($result ? "Plik pomyślnie zapisany" : "Nie udało się zapisać pliku");
+        } catch (\Throwable $exception) {
+            //TODO logowanie błędów
+            $output->writeln(
+                'Wystąpił błąd podczas wykonywania commanda ResizeImageCommand: '.$exception->getMessage()
+            );
         }
-
-        $filePath = $this->filesDirectory.$fileName;
-        if (!$this->filesystem->exists($filePath)) {
-            throw new \InvalidArgumentException('Plik nie istnieje');
-        }
-
-        $resizedFilePath = $this->imageOptimizer->resize($filePath, 150, 150);
-
-        $result = $this->fileManager->save($resizedFilePath, '/'.basename($resizedFilePath));
-        $output->writeln($result ? "Plik pomyślnie zapisany" : "Nie udało się zapisać pliku");
 
         return Command::SUCCESS;
     }

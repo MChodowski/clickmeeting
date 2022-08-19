@@ -25,6 +25,7 @@ class DropboxFileManager implements FileManager
     public function save(string $filePath, string $destinationFilePath): bool
     {
         $this->validateClientPrerequisites();
+        //TODO sprawdzenie czy na serwerze znajduje się już plik o takiej nazwie
 
         $curlHandle = curl_init($this->dropboxUploadEndpoint);
 
