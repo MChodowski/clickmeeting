@@ -72,6 +72,8 @@ class ResizeImageCommand extends Command
             $output->writeln(
                 'Wystąpił błąd podczas wykonywania commanda ResizeImageCommand: '.$exception->getMessage()
             );
+
+            return Command::FAILURE;
         }
 
         return Command::SUCCESS;

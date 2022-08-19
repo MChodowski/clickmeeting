@@ -25,6 +25,10 @@ class ImagineImageOptimizer implements ImageOptimizer
             throw new \InvalidArgumentException('Niepoprawne zdjęcie');
         }
 
+        if ($width === 0 || $height === 0) {
+            throw new \InvalidArgumentException('Wysokość i szerokość zdjęcia nie mogą mieć wartości 0');
+        }
+
         $ratio = $imageInfo[0] / $imageInfo[1];
         if ($width / $height > $ratio) {
             $width = $height * $ratio;
