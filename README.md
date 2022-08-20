@@ -8,7 +8,7 @@
 
 1. W katalogu z aplikacją wykonanie: `docker-compose up -d`
 2. Wykonanie polecenia `docker exec -it php bash`
-3. Wykonanie polecenia `composer install --no-dev`
+3. Wykonanie polecenia `composer install`
 
 # Konfiguracja
 

@@ -2,11 +2,9 @@
 
 namespace App\Tests\Infrastructure;
 
-use App\Infrastructure\DropboxFileManager;
 use App\Infrastructure\ImagineImageOptimizer;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -56,7 +54,7 @@ class ImagineImageOptimizerTest extends KernelTestCase
         $fileName = 'example.jpg';
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Wysokość i szerokość zdjęcia nie mogą mieć wartości 0');
+        $this->expectExceptionMessage('Wysokość i szerokość zdjęcia nie mogą mieć wartości ujemnej lub 0');
         $imagineOptimizer->resize($_ENV['FILES_DIRECTORY'].$fileName, 0, 0);
     }
 }
