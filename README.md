@@ -1,3 +1,7 @@
+# Opis: 
+
+Aplikacja skaluje zdjęcia znajdujące się w katalogu var/files i wysyła je na dysk DropBox. Istnieje łatwa możliwość rozszerzenia działania aplikacji o inne miejsca przechowywania danych, rozszerzając interfejs FileManager.
+
 # Wymagania: 
 
 - docker
